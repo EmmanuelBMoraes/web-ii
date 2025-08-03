@@ -2,12 +2,10 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
+const router = require("./routes/router");
 
 app.use(cors());
 app.use(express.json());
-
-app.get("/", (req, res) => {
-  res.send("API do Projeto Web II está no ar!");
-});
+app.use("/api", router);
 
 module.exports = app;
