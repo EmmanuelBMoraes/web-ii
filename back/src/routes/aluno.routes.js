@@ -10,9 +10,11 @@ const {
   removeDisciplinaFromAluno,
 } = require("../controllers/aluno.controller");
 const validateObjectId = require("../middlewares/validarObjectId.middleware");
+const { protect } = require("../middlewares/auth.middleware");
 
 const router = express.Router();
 
+router.use(protect);
 router.route("/").post(createAluno).get(getAlunos);
 
 router

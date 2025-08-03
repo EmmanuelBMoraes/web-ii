@@ -7,8 +7,10 @@ const {
   getDisciplinaById,
 } = require("../controllers/disciplina.controller");
 const validateObjectId = require("../middlewares/validarObjectId.middleware");
+const { protect } = require("../middlewares/auth.middleware");
 
 const router = express.Router();
+router.use(protect);
 
 router.route("/").post(createDisciplina).get(getDisciplinas);
 
