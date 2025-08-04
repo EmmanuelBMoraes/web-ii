@@ -1,9 +1,12 @@
 import { Outlet } from "react-router-dom";
+import { ThemeToggle } from "../shared/ThemeToggle";
 
 const AuthLayout = () => {
   return (
-    // Esta div centraliza o conteúdo na tela, ideal para um formulário de login.
-    <div className="flex items-center justify-center min-h-screen w-auto bg-gray-100 dark:bg-gray-900">
+    <div className="relative flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
       <Outlet />
     </div>
   );
