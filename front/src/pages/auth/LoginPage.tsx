@@ -7,12 +7,14 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2 } from "lucide-react"; // 1. Importe o ícone de carregamento
+import { Loader2 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const LoginPage = () => {
   const [email, setEmail] = useState<string>("");
@@ -84,6 +86,12 @@ const LoginPage = () => {
             </div>
           </form>
         </CardContent>
+        <CardFooter className="text-sm justify-center">
+          Não tem uma conta?{" "}
+          <Button variant="link" asChild>
+            <Link to="/register">Registre-se</Link>
+          </Button>
+        </CardFooter>
       </Card>
     </div>
   );

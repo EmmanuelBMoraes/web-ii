@@ -10,6 +10,7 @@ import PublicRoute from "./components/shared/PublicRoute";
 
 // Páginas
 import LoginPage from "./pages/auth/LoginPage";
+import RegisterPage from "./pages/auth/RegisterPage"; // Supondo que você tenha uma página de registro
 import NotFoundPage from "./pages/NotFound";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route element={<PublicRoute />}>
           <Route element={<AuthLayout />}>
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
           </Route>
         </Route>
 

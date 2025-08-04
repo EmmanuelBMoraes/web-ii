@@ -2,20 +2,26 @@
 import { createContext, useState, useContext, type ReactNode } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import apiClient from "../lib/apiClient";
+import {
+  type LoginCredentials,
+  type RegisterCredentials,
+} from "../types/auth.type";
 
 interface AuthContextType {
   isAuthenticated: boolean;
   login: (
-    variables: { email: string; senha: string },
-    options?: { onSuccess?: () => void; onError?: (error: Error) => void }
+    credentials: LoginCredentials,
+    options?: { onSuccess?: () => void }
   ) => void;
   logout: () => void;
+  register: (
+    credentials: RegisterCredentials,
+    options?: { onSuccess?: () => void }
+  ) => void;
   isLoggingIn: boolean;
+  isRegistering: boolean;
   loginError: Error | null;
-}
-
-interface AuthProviderProps {
-  children: ReactNode;
+  registerError: Error | null;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -35,25 +41,30 @@ if (initialToken) {
   setupAuth(initialToken);
 }
 
-export const AuthProvider = ({ children }: AuthProviderProps) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(initialToken);
   const queryClient = useQueryClient();
 
-  const loginMutation = useMutation({
-    mutationFn: (credentials: { email: string; senha: string }) =>
-      apiClient.post("/auth/login", credentials),
+  const handleAuthSuccess = (response: any) => {
+    const newToken = response.data.token;
+    setToken(newToken);
+    setupAuth(newToken);
+  };
 
-    onSuccess: (response) => {
-      const newToken = response.data.token;
-      setToken(newToken);
-      setupAuth(newToken);
-    },
+  const loginMutation = useMutation({
+    mutationFn: (credentials: LoginCredentials) =>
+      apiClient.post("/auth/login", credentials),
+    onSuccess: handleAuthSuccess,
+  });
+
+  const registerMutation = useMutation({
+    mutationFn: (credentials: RegisterCredentials) =>
+      apiClient.post("/auth/register", credentials),
+    onSuccess: handleAuthSuccess,
   });
 
   const logoutMutation = useMutation({
-    mutationFn: async () => {
-      return Promise.resolve();
-    },
+    mutationFn: async () => Promise.resolve(),
     onSuccess: () => {
       setToken(null);
       setupAuth(null);
@@ -68,9 +79,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       value={{
         isAuthenticated,
         login: loginMutation.mutate,
+        register: registerMutation.mutate,
         logout: logoutMutation.mutate,
         isLoggingIn: loginMutation.isPending,
+        isRegistering: registerMutation.isPending,
         loginError: loginMutation.error,
+        registerError: registerMutation.error,
       }}
     >
       {children}
