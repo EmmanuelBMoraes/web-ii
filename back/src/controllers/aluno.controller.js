@@ -4,9 +4,28 @@ const logger = require("../config/logger");
 const path = require("path");
 const childLogger = logger.child({ context: path.basename(__filename) });
 
+const getDisciplinaIdsByNames = async (nomes) => {
+  if (!nomes || nomes.length === 0) {
+    return [];
+  }
+  const disciplinas = await Disciplina.find({
+    nome: { $in: nomes },
+    ativo: true,
+  }).select("_id");
+  return disciplinas.map((d) => d._id);
+};
+
 exports.createAluno = async (req, res, next) => {
   try {
-    const aluno = await Aluno.create(req.body);
+    const dadosAluno = { ...req.body };
+
+    if (dadosAluno.disciplinas && dadosAluno.disciplinas.length > 0) {
+      dadosAluno.disciplinas = await getDisciplinaIdsByNames(
+        dadosAluno.disciplinas
+      );
+    }
+
+    const aluno = await Aluno.create(dadosAluno);
     childLogger.info(
       { alunoId: aluno._id },
       `Aluno '${aluno.nome}' criado com sucesso.`
@@ -47,7 +66,12 @@ exports.updateAluno = async (req, res, next) => {
   try {
     const dadosParaAtualizar = { ...req.body };
     delete dadosParaAtualizar.ativo;
-    delete dadosParaAtualizar.disciplinas;
+
+    if (dadosParaAtualizar.hasOwnProperty("disciplinas")) {
+      dadosParaAtualizar.disciplinas = await getDisciplinaIdsByNames(
+        dadosParaAtualizar.disciplinas
+      );
+    }
 
     const aluno = await Aluno.findByIdAndUpdate(
       req.params.id,
@@ -56,12 +80,14 @@ exports.updateAluno = async (req, res, next) => {
         new: true,
         runValidators: true,
       }
-    );
+    ).populate("disciplinas");
+
     if (!aluno) {
       return res
         .status(404)
         .json({ success: false, error: "Aluno não encontrado" });
     }
+
     childLogger.info(
       { alunoId: aluno._id },
       `Aluno '${aluno.nome}' atualizado com sucesso.`
