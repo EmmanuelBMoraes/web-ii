@@ -15,6 +15,7 @@ import NotFoundPage from "./pages/NotFound";
 import MainLayout from "./components/layouts/MainLayout";
 import DashboardPage from "./pages/DashboardPage";
 import AlunosListPage from "./pages/alunos/AlunosListPage";
+import DisciplinasListPage from "./pages/disciplinas/DisciplinasListPage";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route element={<MainLayout />}>
             <Route path="/" element={<DashboardPage />} />
             <Route path="/alunos" element={<AlunosListPage />} />
+            <Route path="/disciplinas" element={<DisciplinasListPage />} />
           </Route>
         </Route>
         {/* Rota para página não encontrada (404) */}
