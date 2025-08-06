@@ -14,6 +14,7 @@ import RegisterPage from "./pages/auth/RegisterPage";
 import NotFoundPage from "./pages/NotFound";
 import MainLayout from "./components/layouts/MainLayout";
 import DashboardPage from "./pages/DashboardPage";
+import AlunosListPage from "./pages/alunos/AlunosListPage";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
             <Route path="/" element={<DashboardPage />} />
+            <Route path="/alunos" element={<AlunosListPage />} />
           </Route>
         </Route>
         {/* Rota para página não encontrada (404) */}

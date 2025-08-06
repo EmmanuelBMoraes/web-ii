@@ -56,6 +56,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { DisciplinaForm } from "@/components/forms/DisciplinaForm";
 import { AlunoForm } from "@/components/forms/AlunoForm";
+import { Badge } from "@/components/ui/badge";
 
 const DashboardPage = () => {
   const queryClient = useQueryClient();
@@ -213,9 +214,16 @@ const DashboardPage = () => {
                       <TableCell>{aluno.nome}</TableCell>
                       <TableCell>{aluno.curso}</TableCell>
                       <TableCell>
-                        {aluno.disciplinas
-                          .map((disciplina) => disciplina.nome)
-                          .join(", ")}
+                        <div className="flex flex-wrap gap-1">
+                          {aluno.disciplinas
+                            ?.map((disc) => disc?.nome)
+                            .filter(Boolean)
+                            .map((nome) => (
+                              <Badge key={nome} variant="outline">
+                                {nome}
+                              </Badge>
+                            )) || "Nenhuma"}
+                        </div>
                       </TableCell>
                       <TableCell className="text-right">
                         <DropdownMenu>
