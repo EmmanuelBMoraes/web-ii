@@ -10,8 +10,10 @@ import PublicRoute from "./components/shared/PublicRoute";
 
 // Páginas
 import LoginPage from "./pages/auth/LoginPage";
-import RegisterPage from "./pages/auth/RegisterPage"; // Supondo que você tenha uma página de registro
+import RegisterPage from "./pages/auth/RegisterPage";
 import NotFoundPage from "./pages/NotFound";
+import MainLayout from "./components/layouts/MainLayout";
+import DashboardPage from "./pages/DashboardPage";
 
 function App() {
   return (
@@ -26,7 +28,11 @@ function App() {
         </Route>
 
         {/* Rotas Protegidas que usam o layout principal (com Navbar, Sidebar, etc.) */}
-        <Route element={<ProtectedRoute />}></Route>
+        <Route element={<ProtectedRoute />}>
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<DashboardPage />} />
+          </Route>
+        </Route>
         {/* Rota para página não encontrada (404) */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
