@@ -24,7 +24,7 @@ Antes de começar, certifique-se de ter o seguinte instalado em sua máquina:
 1.  **Clone o repositório:**
 
     ```bash
-    git clone <URL_DO_SEU_REPOSITORIO>
+    git clone https://github.com/EmmanuelBMoraes/web-ii
     cd projeto-web-ii
     ```
 
