@@ -14,7 +14,7 @@ import { type Aluno } from "@/types/models.type";
 
 // --- Components ---
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
